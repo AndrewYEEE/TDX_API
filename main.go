@@ -75,7 +75,7 @@ package main
 
 
 import (
-    // "context"
+    "context"
     "fmt"
     "log"
     // "golang.org/x/oauth2"
@@ -85,16 +85,30 @@ import (
 	"strings"
 	"encoding/json"
 	// "reflect"
-	CAS "./commonapiservice/CAS" 
+	CAS "github.com/AndrewYEEE/commonapiservice" 
+	// CAG "github.com/AndrewYEEE/common_gov"
+	"github.com/antihax/optional"
 )
+/*
+使用swagger自動產生的client步驟:
+1. 從swaggerhub下載OAS轉過的client包
+2. 把那包解壓，改名稱，例如"commonapiservice"，放到與本專案相同路徑後，先去github上建立新專案，例如"commonapiservice"，然後獲取網址 "github.com/AndrewYEEE/commonapiservice"
+3. 然後進去那包，建立go mod init github.com/AndrewYEEE/commonapiservice
+4. 將那包推到github.com/AndrewYEEE/commonapiservice
+5. 在本main.go檔案裡先添加import "github.com/AndrewYEEE/commonapiservice"
+6. 在本專案的go.mod加入" replace github.com/AndrewYEEE/commonapiservice => ./commonapiservice "
+7. go build -v本專案，他就會自己將遠端抓下來，但又導向本地commonapiservice資料夾
+8. 自己在import地方用的別名就可用了
+*/
+
+
 var APP_ID string =""
 var APP_KEY string =""
 var TDX_AUTH_url string = "https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token"
 //var data_url string = "https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/DailyTrainTimetable/OD/{0}/to/{1}/{2}$format=JSON".format(OriginStationID, DestinationStationID, TrainDate)
 
 func main() {
-	CASClient := CAS.NewAPIClient()
-	log.Println(CASClient)
+	var err error
     // // configure the OAuth2 client
     // config := &oauth2.Config{
     //     ClientID:     APP_ID,
@@ -112,8 +126,29 @@ func main() {
 	
     // fmt.Printf("Token: %s\n", token)
 
-	// token, time,_ := HttpRequest_TDX_GETToken(APP_ID,APP_KEY,TDX_AUTH_url)
+	token, _, err := HttpRequest_TDX_GETToken(APP_ID,APP_KEY,TDX_AUTH_url)
 	// log.Println(token, time)
+	if err == nil {
+		// ctx, cancel := context.WithCancel(context.Background())
+		CAS_ctx:=context.WithValue(context.Background(),CAS.ContextAccessToken,token) //傳入token
+		// log.Println(CAS.ContextAccessToken)
+		// return 
+		CAS_cfg:=CAS.NewConfiguration()
+		// CAG_cfg:=CAG.NewConfiguration()
+		CASClient := CAS.NewAPIClient(CAS_cfg)
+		// CAGClient := CAG.NewAPIClient(CAG_cfg)
+		
+		//查詢參數
+		CAS_Param := &CAS.CommonApiBasicApiAuthority2160Opts{
+			Select_: optional.NewString("AuthorityUrl"),
+		}
+
+		PtxServiceDtoSharedSpecificationV2BaseAuthority, Resp,err := CASClient.CommonApi.BasicApiAuthority2160(CAS_ctx,"JSON",CAS_Param)
+
+		log.Println(PtxServiceDtoSharedSpecificationV2BaseAuthority, len(PtxServiceDtoSharedSpecificationV2BaseAuthority))
+		log.Println(Resp)
+		log.Println(err)
+	}
 }
 
 

@@ -1,6 +1,6 @@
-module CAS
+module github.com/AndrewYEEE/commonapiservice
 
-go 1.18
+go 1.18  
 
 require (
 	github.com/antihax/optional v1.0.0
