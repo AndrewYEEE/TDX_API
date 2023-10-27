@@ -1,0 +1,549 @@
+openapi: 3.0.1
+info:
+  title: 共通資料-公共運輸
+  description: |2-
+
+    ---
+    ##### API線上說明(Swagger UI)使用流程與注意事項：
+    1. 若不使用API金鑰呼叫API，則僅能透過瀏覽器呼叫`【基礎】`服務 ，且每個呼叫來源端IP的上限為每日50次。
+    2. `【進階】`、`【加值】`、`【歷史】`、`【MaaS】`服務需加入會員並取得API金鑰之後才能使用。
+    3. 欲使用API金鑰呼叫API，需[註冊為TDX會員](/register)，並於會員中心取得API金鑰。
+    4. 註冊為會員之後，至[【會員專區-資料服務-服務金鑰】](/user/dataservice/key)功能頁面，從預設金鑰(或建立新的金鑰)取得Client Id和Client Secret資訊。
+    5. 點選Swagger UI上的Authorize按鈕，依指示填入Client Id和Client Secret資訊並進行驗證，驗證完成後可開始於Swagger UI使用API。
+    6. 欲透過程式介接API，可參考[範例程式](https://github.com/tdxmotc/SampleCode)。
+    7. 為確保系統資源使用的合理分配與避免遭受濫用，於Swagger UI上使用API與程式介接API的行為將被記錄並定期做檢視。
+
+    ##### API呼叫次數限制:
+    1. 若不使用API金鑰呼叫API，則僅能透過瀏覽器呼叫`【基礎】`服務 ，且每個呼叫來源端IP的上限為每日50次。
+    2. 使用API金鑰呼叫API，每個呼叫來源端IP呼叫次數限制為50次/秒 (無每日上限)。
+
+    API OAS文本 :[請點我](https://tdx.transportdata.tw/webapi/File/Swagger/V3/9aa23880-013d-4919-be46-3d748d7001e4)
+  version: v3
+servers:
+- url: https://tdx.transportdata.tw/api/basic
+security:
+- TDX: []
+tags:
+- name: Common
+  description: 共通資料(公共運輸)
+paths:
+  /v2/Basic/Authority:
+    get:
+      tags:
+      - Common
+      summary: 取得業管機關資料
+      operationId: BasicApi_Authority_2160
+      parameters:
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 30
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Array
+                type: array
+                items:
+                  $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Authority'
+                x-content-type: application/json
+            application/xml:
+              schema:
+                title: Array
+                type: array
+                items:
+                  $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Authority'
+        "304":
+          description: 服務端會在Response加上Last-Modified header，表示最近的更新時間。客戶端能利用此時間，於Request加上If-Modified-Since
+            header，若沒有更新，服務端會回應304 StatusCode且空值Content
+          content:
+            application/json: {}
+            application/xml: {}
+  /v2/Basic/Provider:
+    get:
+      tags:
+      - Common
+      summary: 取得資料提供平台資料
+      operationId: BasicApi_Provider_2161
+      parameters:
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 30
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Array
+                type: array
+                items:
+                  $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Provider'
+                x-content-type: application/json
+            application/xml:
+              schema:
+                title: Array
+                type: array
+                items:
+                  $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Provider'
+        "304":
+          description: 服務端會在Response加上Last-Modified header，表示最近的更新時間。客戶端能利用此時間，於Request加上If-Modified-Since
+            header，若沒有更新，服務端會回應304 StatusCode且空值Content
+          content:
+            application/json: {}
+            application/xml: {}
+  /v2/Basic/Operator:
+    get:
+      tags:
+      - Common
+      summary: 取得營運業者資料
+      operationId: BasicApi_Operator_2162
+      parameters:
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 30
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Array
+                type: array
+                items:
+                  $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Operator'
+                x-content-type: application/json
+            application/xml:
+              schema:
+                title: Array
+                type: array
+                items:
+                  $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Operator'
+        "304":
+          description: 服務端會在Response加上Last-Modified header，表示最近的更新時間。客戶端能利用此時間，於Request加上If-Modified-Since
+            header，若沒有更新，服務端會回應304 StatusCode且空值Content
+          content:
+            application/json: {}
+            application/xml: {}
+components:
+  schemas:
+    PTX.Service.DTO.Shared.Specification.V2.Base.Authority:
+      title: Authority
+      required:
+      - AuthorityCode
+      - AuthorityID
+      - AuthorityName
+      - UpdateTime
+      type: object
+      properties:
+        AuthorityID:
+          title: String
+          minLength: 1
+          type: string
+          description: 業管機關代碼
+          xml:
+            name: AuthorityID
+        AuthorityName:
+          title: NameType
+          description: 業管機關名稱
+          xml:
+            name: NameType
+          allOf:
+          - $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.NameType'
+        AuthorityPhone:
+          title: String
+          type: string
+          description: 業管機關連絡電話
+          xml:
+            name: AuthorityPhone
+        AuthorityEmail:
+          title: String
+          type: string
+          description: 業管機關電子信箱
+          xml:
+            name: AuthorityEmail
+        AuthorityUrl:
+          title: String
+          type: string
+          description: 業管機關網址鏈結
+          xml:
+            name: AuthorityUrl
+        AuthorityCode:
+          title: String
+          minLength: 1
+          type: string
+          description: 業管機關簡碼
+          xml:
+            name: AuthorityCode
+        UpdateTime:
+          title: DateTime
+          type: string
+          description: 資料更新日期時間(ISO8601格式:yyyy-MM-ddTHH:mm:sszzz)
+          format: date-time
+      description: 業管機關資料型別
+      example:
+        AuthorityName: ""
+        AuthorityID: AuthorityID
+        AuthorityPhone: AuthorityPhone
+        AuthorityCode: AuthorityCode
+        UpdateTime: 2000-01-23T04:56:07.000+00:00
+        AuthorityUrl: AuthorityUrl
+        AuthorityEmail: AuthorityEmail
+      xml:
+        name: Authority
+    PTX.Service.DTO.Shared.Specification.V2.Base.Authority0:
+      $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Authority'
+    PTX.Service.DTO.Shared.Specification.V2.Base.NameType:
+      title: NameType
+      type: object
+      properties:
+        Zh_tw:
+          title: String
+          type: string
+          description: 中文繁體名稱
+          xml:
+            name: Zh_tw
+        En:
+          title: String
+          type: string
+          description: 英文名稱
+          xml:
+            name: En
+      description: 名稱資料型別
+      xml:
+        name: NameType
+    PTX.Service.DTO.Shared.Specification.V2.Base.Provider:
+      title: Provider
+      required:
+      - ProviderCode
+      - ProviderID
+      - ProviderName
+      - UpdateTime
+      type: object
+      properties:
+        ProviderID:
+          title: String
+          minLength: 1
+          type: string
+          description: 資料提供平台代碼
+          xml:
+            name: ProviderID
+        ProviderName:
+          title: NameType
+          description: 資料提供平台名稱
+          xml:
+            name: NameType
+          allOf:
+          - $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.NameType'
+        ProviderPhone:
+          title: String
+          type: string
+          description: 資料提供平台連絡電話
+          xml:
+            name: ProviderPhone
+        ProviderEmail:
+          title: String
+          type: string
+          description: 資料提供平台電子信箱
+          xml:
+            name: ProviderEmail
+        ProviderUrl:
+          title: String
+          type: string
+          description: 資料提供平台網址鏈結
+          xml:
+            name: ProviderUrl
+        UpdateTime:
+          title: DateTime
+          type: string
+          description: 資料更新日期時間(ISO8601格式:yyyy-MM-ddTHH:mm:sszzz)
+          format: date-time
+        ProviderCode:
+          title: String
+          minLength: 1
+          type: string
+          description: 資料提供平台簡碼
+          xml:
+            name: ProviderCode
+      description: 資料提供平台資料型別
+      example:
+        ProviderID: ProviderID
+        ProviderName: ""
+        ProviderPhone: ProviderPhone
+        ProviderUrl: ProviderUrl
+        ProviderCode: ProviderCode
+        UpdateTime: 2000-01-23T04:56:07.000+00:00
+        ProviderEmail: ProviderEmail
+      xml:
+        name: Provider
+    PTX.Service.DTO.Shared.Specification.V2.Base.Provider1:
+      $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Provider'
+    PTX.Service.DTO.Shared.Specification.V2.Base.Operator:
+      title: Operator
+      required:
+      - AuthorityCode
+      - OperatorID
+      - OperatorName
+      - OperatorNo
+      - ProviderID
+      - UpdateTime
+      type: object
+      properties:
+        ProviderID:
+          title: String
+          minLength: 1
+          type: string
+          description: 資料提供平台代碼
+          xml:
+            name: ProviderID
+        OperatorID:
+          title: String
+          minLength: 1
+          type: string
+          description: 營運業者代碼
+          xml:
+            name: OperatorID
+        OperatorName:
+          title: NameType
+          description: 營運業者名稱
+          xml:
+            name: NameType
+          allOf:
+          - $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.NameType'
+        OperatorPhone:
+          title: String
+          type: string
+          description: 營運業者連絡電話
+          xml:
+            name: OperatorPhone
+        OperatorEmail:
+          title: String
+          type: string
+          description: 營運業者電子信箱
+          xml:
+            name: OperatorEmail
+        OperatorUrl:
+          title: String
+          type: string
+          description: 營運業者網址鏈結
+          xml:
+            name: OperatorUrl
+        ReservationUrl:
+          title: String
+          type: string
+          description: 訂票網址鏈結
+          xml:
+            name: ReservationUrl
+        ReservationPhone:
+          title: String
+          type: string
+          description: 訂票連絡電話
+          xml:
+            name: ReservationPhone
+        OperatorCode:
+          title: String
+          type: string
+          description: 營運業者簡碼
+          xml:
+            name: OperatorCode
+        AuthorityCode:
+          title: String
+          minLength: 1
+          type: string
+          description: 營運業者業管機關簡碼(對於於公路客運/國道客運而言為THB)
+          xml:
+            name: AuthorityCode
+        SubAuthorityCode:
+          title: String
+          type: string
+          description: 營運業者所屬業管子機關簡碼(對於公路客運/國道客運路線而言為區監理所如THB-VO10-1..等)
+          xml:
+            name: SubAuthorityCode
+        OperatorNo:
+          title: String
+          minLength: 1
+          type: string
+          description: "營運業者編號[交通部票證資料系統定義]"
+          xml:
+            name: OperatorNo
+        UpdateTime:
+          title: DateTime
+          type: string
+          description: 資料更新日期時間(ISO8601格式:yyyy-MM-ddTHH:mm:sszzz)
+          format: date-time
+      description: 營運業者資料型別
+      example:
+        ProviderID: ProviderID
+        OperatorName: ""
+        ReservationUrl: ReservationUrl
+        OperatorID: OperatorID
+        OperatorPhone: OperatorPhone
+        OperatorEmail: OperatorEmail
+        OperatorUrl: OperatorUrl
+        SubAuthorityCode: SubAuthorityCode
+        OperatorNo: OperatorNo
+        ReservationPhone: ReservationPhone
+        AuthorityCode: AuthorityCode
+        UpdateTime: 2000-01-23T04:56:07.000+00:00
+        OperatorCode: OperatorCode
+      xml:
+        name: Operator
+    PTX.Service.DTO.Shared.Specification.V2.Base.Operator2:
+      $ref: '#/components/schemas/PTX.Service.DTO.Shared.Specification.V2.Base.Operator'
+  securitySchemes:
+    TDX:
+      type: oauth2
+      description: TDX會員可至【會員專區-資料服務-服務金鑰】功能頁面，從預設金鑰(或建立新的金鑰)取得Client Id和Client Secret資訊，分別輸入至下方client_id和client_secret欄位、按下Authorize按鈕，即可開始於Swagger介面呼叫TDX
+        API。
+      flows:
+        clientCredentials:
+          tokenUrl: https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token
+          scopes: {}
